@@ -1,0 +1,10 @@
+language: java
+jdk:
+- oraclejdk7
+branches:
+  only:
+  - master
+script: mvn clean verify -DskipTests
+after_success:
+- mvn clean test cobertura:cobertura coveralls:report | egrep -v "^((.*)api_key=(.{32}))"
+- bash <(curl -s https://codecov.io/bash)

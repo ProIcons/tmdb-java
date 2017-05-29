@@ -36,7 +36,7 @@ import static com.uwetrottmann.tmdb2.TestData.testTvShow;
 public class TmdbTestSuite {
 
     private static String API_KEY;
-    public static String USERNAME ;
+    public static String USERNAME;
     public static String PASSWORD;
     static final boolean DEBUG = true;
 
