@@ -1,0 +1,10 @@
+machine:
+  java:
+    version: openjdk7
+test:
+  override:
+      - mvn clean test cobertura:cobertura coveralls:report -Dtest=com.uwetrottmann.tmdb2.TmdbTestSuite | egrep -v "^((.*)api_key=(.{32}))"
+  post:
+      - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+      - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+      - bash <(curl -s https://codecov.io/bash)
