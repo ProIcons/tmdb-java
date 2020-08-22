@@ -56,28 +56,8 @@ public class TmdbInterceptor implements Interceptor {
 
         Request.Builder builder = request.newBuilder();
         builder.url(urlBuilder.build());
-        Response response = chain.proceed(builder.build());
 
-        if (!response.isSuccessful()) {
-            // re-try if the server indicates we should
-            String retryHeader = response.header("Retry-After");
-            if (retryHeader != null) {
-                try {
-                    int retry = Integer.parseInt(retryHeader);
-                    Thread.sleep((int) ((retry + 0.5) * 1000));
-
-                    // close body of unsuccessful response
-                    if (response.body() != null) {
-                        response.body().close();
-                    }
-                    // is fine because, unlike a network interceptor, an application interceptor can re-try requests
-                    return handleIntercept(chain, tmdb);
-                } catch (NumberFormatException | InterruptedException ignored) {
-                }
-            }
-        }
-
-        return response;
+        return chain.proceed(builder.build());
     }
 
     private static void addSessionToken(Tmdb tmdb, HttpUrl.Builder urlBuilder) {
